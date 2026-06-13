@@ -145,10 +145,16 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Desktop\Node.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="SteamAchievementViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Downloads\SteamAchievementViewer_V1.0.0\steam_api64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Desktop\Node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

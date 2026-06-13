@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <fstream>
 #include <vector>
-
+#include "LinkedList.h"
 
 int main()
 {
@@ -40,47 +40,57 @@ int main()
 
     // Fetching number of achievements for the selected game
     const int numOfAchievements = SteamUserStats()->GetNumAchievements();
-    std::vector<std::string> unlockedAchievements;
-    int size = 0;
-
+	LinkedList unlockedAchievements;
+   
     // Creating the "Achievements.json" file
     const std::string outputFileName = "Achievements.json";
     std::ofstream outputFile(outputFileName);
     outputFile << '[' << std::endl;
-
+    
     std::cout << "Processing " << numOfAchievements << " achievements..." << std::endl;
 
-    // Reading each achievement; If user has unlocked achievement, add it to unlockedAchievements array
+    // Reading each achievement; If user has unlocked achievement, add it to unlockedAchievements list
     for (int i = 0; i < numOfAchievements; i++) {
         const char* achiName = SteamUserStats()->GetAchievementName(i);
         bool hasUnlocked = false;
         if (SteamUserStats()->GetAchievement(achiName, &hasUnlocked) && hasUnlocked) {
-            unlockedAchievements.push_back(achiName);
-            size++;
+            unlockedAchievements.insert(unlockedAchievements.getLength() + 1, achiName);
         }
     }
 
     // Exporting unlocked achievements
+	const int size = unlockedAchievements.getLength();
     std::cout << "Exporting " << size << " unlocked achievements..." << std::endl;
 
-    for (int i = 0; i < size; i++) {
-        const char* achievementName = unlockedAchievements[i].c_str();
-        const char* achievementPublicName = SteamUserStats()->GetAchievementDisplayAttribute(achievementName, "name");
-        const char* achievementPublicDesc = SteamUserStats()->GetAchievementDisplayAttribute(achievementName, "desc");
+    Node* current = unlockedAchievements.getNodeAt(1);
+    int i = 1;
+
+    // Iterating the linked list, starting from headptr
+    while (current != nullptr) {
+        std::string temp = current->getItem();  
+        const char* ptr = temp.c_str();          
+
+        const char* achievementPublicName = SteamUserStats()->GetAchievementDisplayAttribute(ptr, "name");
+        const char* achievementPublicDesc = SteamUserStats()->GetAchievementDisplayAttribute(ptr, "desc");
+
         outputFile << "\t{" << std::endl;
         outputFile << "\t\t\"Name\": " << '\"' << achievementPublicName << "\"," << std::endl;
         outputFile << "\t\t\"Description\": " << '\"' << achievementPublicDesc << "\"" << std::endl;
-        if (i == size - 1) {
+
+        if (i == size) {
             outputFile << "\t}" << std::endl;
         }
         else {
             outputFile << "\t}," << std::endl;
         }
+        current = current->getNext();
+        i++;
     }
 
     // Finishing and closing "Achievements.json" file
     outputFile << ']' << std::endl;
     outputFile.close();
+    unlockedAchievements.clear();
 
     std::cout << "Your unlocked achievements have been exported to \"Achievements.json\"." << std::endl;
 

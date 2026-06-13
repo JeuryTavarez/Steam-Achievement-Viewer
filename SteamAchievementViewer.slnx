@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="SteamAchievementViewer/SteamAchievementViewer.vcxproj" Id="ff969007-f51a-419e-9755-14b6aad4eda4" />
+</Solution>

@@ -1,0 +1,15 @@
+# Ignore Visual Studio project configuration and databases
+.vs/
+*.user
+*.suo
+*.db
+*.opendb
+
+# Ignore all local build output directories
+x64/
+Debug/
+Release/
+
+# Ignore files generated at runtime
+*.json
+*.txt
